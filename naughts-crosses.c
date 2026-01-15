@@ -19,27 +19,44 @@ MADE WITHOUT ANY GUIDE
 #define INPUT_NOTHING -1
 #define p1_SYMBOL 'X'
 #define p2_SYMBOL 'O'
+#define PLAYER1 0
+#define PLAYER2 1
 
 void print_header();
 void print_grid();
+void add_move();
 
 int main(void) 
 {   
     // Stores the grid elements, starting blank
-    char gameGrid[GRID_SIZE] = {' ', ' ', ' ', ' ', ' ', ' '};
+    char gameGrid[GRID_SIZE] = {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '};
     
     // Stores the player's input
     int input = INPUT_NOTHING;
     //int tempInput = INPUT_NOTHING;
     // https://www.reddit.com/r/learnprogramming/comments/1d0w4x/c_scanf_d_but_error_if_user_enters_a_character/
 
-    // Stores the current game turn, starting from 1: player 1 has odd, player 2 has even turns
-    int gameTurn = 1;
+    // Stores the current game turn, starting from 1: player 1 has even, player 2 has odd turns
+    int gameTurn = 0;
 
     print_grid();
     printf("Turn: %d. Make a move: ", gameTurn);
     scanf("%d", &input);
-    printf("\nYour move was: %d", input);
+    printf("\nYour move was: %d\n", input);
+
+
+   add_move(input, gameTurn, gameGrid);
+    
+    // Testing to see if we can input player moves
+    int i;
+    for (i=0; i < GRID_SIZE; i++) {
+        if (!(i % 3)) 
+        {
+            // Divisible by 3: start a new line
+            printf("\n");
+        }
+        printf("Game square %d: %c\t", i, gameGrid[i]);
+    }
     
 }
 
@@ -78,3 +95,18 @@ void print_grid()
     printf("\n\n");
 }
 
+void add_move(int playerMove, int gameTurn, char gameGrid[]) 
+{
+    // Add the move input into the correct location in the game array
+    if (gameTurn % 2) 
+    {
+        // Odd turn, player 2 goes
+        gameGrid[playerMove-1] = p2_SYMBOL;        
+    }
+    else 
+    {
+        // Even turn, player 1 goes
+        gameGrid[playerMove-1] = p1_SYMBOL;
+    }
+
+}
